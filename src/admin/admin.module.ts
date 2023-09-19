@@ -11,8 +11,6 @@ import { MulterModule } from '@nestjs/platform-express/multer';
     global: true,
     secret: 'Sx59mzoV2WJJZCtJhQuq',
     signOptions: { expiresIn: '60m' },
-  }), MulterModule.register({
-    dest: './upload',
   })],
   controllers: [AdminController],
   providers: [AdminService, ...adminsProviders],

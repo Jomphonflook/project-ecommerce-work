@@ -7,9 +7,11 @@ import { FileSystemController } from './file-system/fs.controller';
 import { FsModule } from './file-system/fs.module';
 import { ProductModule } from './product/product.module';
 import { PromotionModule } from './promotion/promotion.module';
+import { UserModule } from './user/user.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
-  imports: [AdminModule, FsModule, ProductModule, PromotionModule],
+  imports: [AdminModule, FsModule, ProductModule, PromotionModule, UserModule, OrderModule],
   controllers: [AppController],
   providers: [AppService],
 })

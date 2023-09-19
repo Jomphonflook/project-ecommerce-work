@@ -3,6 +3,10 @@ import { Model } from 'mongoose';
 import { IProduct } from 'src/database/interface/product.interface';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import * as _ from 'lodash';
+
+let lastData = null
+let lastFilter = null
 
 @Injectable()
 export class ProductService {
@@ -21,12 +25,31 @@ export class ProductService {
         return result
     }
 
-    async getAllProduct() {
-        const filter = {
-            //price: { $gt: 0, $lt: 800 }
-            //"name" : { $regex: "ant", $options: 'i'}
+    async getAllProduct(filter: any) {
+        const total = await this.productModel.count()
+        // const limit = 2
+        // const page = 1
+        const testFilter = {
+            price: { $gt: filter.priceStart, $lt: filter.priceTo },
+            //name: { $regex: filter.productName, $options: 'i' }
         }
-        const result = await this.productModel.find(filter)
-        return result
+
+        console.log("CHECK EQUAL FILTER", _.isEqual(lastFilter, filter))
+        if (lastData && _.isEqual(lastFilter, filter)) {
+            return {
+                total: total,
+                amount: lastData.length,
+                data: lastData
+            }
+        }
+        const result = await this.productModel.find(testFilter)//.skip((page - 1) * limit).limit(limit)
+        lastFilter = filter
+        lastData = result
+        //await new Promise(resolve => setTimeout(resolve, 2000)); //delay respone
+        return {
+            total: total,
+            amount: result.length,
+            data: result
+        }
     }
 }

@@ -24,7 +24,9 @@ export class ProductController {
   }
 
   @Get()
-  async getAllProduct(){
-    return await this.productService.getAllProduct()
+  async getAllProduct(
+    @Body() filter: any
+  ){
+    return await this.productService.getAllProduct(filter)
   }
 }

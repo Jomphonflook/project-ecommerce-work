@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import { IPromotion } from "../interface/promotion.interface";
-import { timestamp } from "rxjs";
 
 export const PromotionSchema = new mongoose.Schema<IPromotion>({
     promotion_code: { type: String, required: true, unique: true },

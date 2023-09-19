@@ -20,7 +20,7 @@ export class AdminService {
     const checkUser = await this.adminModel.findOne({ username: input.username, isActive: true, isDelete: false })
     if (checkUser) {
       return {
-        msg: "duplicate user"
+        msg: "duplicate admin"
       }
     }
     const saltOrRounds = 10;
