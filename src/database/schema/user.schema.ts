@@ -2,15 +2,6 @@ import mongoose from "mongoose";
 import { IUser } from "../interface/user.interface";
 
 export const UserSchema = new mongoose.Schema<IUser>({
-    member_code: {
-        unique: true,
-        type: String,
-        required: true
-    },
-    titlename: {
-        type: String,
-        required: true
-    },
     username: {
         unique: true,
         type: String,

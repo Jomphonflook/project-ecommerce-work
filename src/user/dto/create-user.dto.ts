@@ -1,9 +1,6 @@
 import { IsDefined, IsOptional, IsString } from "class-validator";
 
 export class CreateUserDto {
-    @IsDefined()
-    @IsString()
-    member_code: String;
 
     @IsDefined()
     @IsString()
@@ -16,10 +13,6 @@ export class CreateUserDto {
     @IsDefined()
     @IsString()
     phone: String;
-    
-    @IsDefined()
-    @IsString()
-    titlename: string;
 
     @IsDefined()
     @IsString()

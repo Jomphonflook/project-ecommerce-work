@@ -9,9 +9,10 @@ import { ProductModule } from './product/product.module';
 import { PromotionModule } from './promotion/promotion.module';
 import { UserModule } from './user/user.module';
 import { OrderModule } from './order/order.module';
+import { CartModule } from './cart/cart.module';
 
 @Module({
-  imports: [AdminModule, FsModule, ProductModule, PromotionModule, UserModule, OrderModule],
+  imports: [AdminModule, FsModule, ProductModule, PromotionModule, UserModule, OrderModule, CartModule],
   controllers: [AppController],
   providers: [AppService],
 })

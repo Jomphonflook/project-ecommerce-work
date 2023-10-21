@@ -3,32 +3,35 @@ import { IProductList, StatusOrderEnum } from "src/database/interface/order.inte
 
 @ValidatorConstraint()
 export class IsProductArray implements ValidatorConstraintInterface {
-    public async validate(Data: IProductList[], args: ValidationArguments) {
-        return Array.isArray(Data) && Data.reduce((a, b) => a && (typeof b.amount === "number") && typeof b.productId === "string", true);
+    public async validate(Data: IProductList[]) {
+        return Array.isArray(Data) && Data.reduce((a, b) => a && (typeof b.amount === "number") && typeof b.option === "string", true);
     }
 }
 
 export class CreateOrderDto {
     @IsOptional()
-    @IsString()
-    order_code: string
-
-    @IsNotEmpty()
-    @IsArray()
-    @Validate(IsProductArray, {
-        message: "Enter valid value .",
-    })
-    productList: IProductList[]
+    order_code: any
 
     @IsDefined()
+    @IsString()
+    cartId : string
+
+    userId : string
+
+    totalDiscount : number
+
+    @IsOptional()
+    productList: IProductList[]
+
+    @IsOptional()
     @IsNumber()
     price: number
 
-    @IsDefined()
+    @IsOptional()
     @IsNumber()
     discount: number
 
-    @IsDefined()
+    @IsOptional()
     @IsNumber()
     net_price: number
 

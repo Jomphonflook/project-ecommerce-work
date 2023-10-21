@@ -11,7 +11,7 @@ export interface IOrder {
     order_code : string
     productList : IProductList[]
     price : number
-    discount : number
+    totalDiscount : number
     net_price : number
     purchase_date: Date
     status : StatusOrderEnum
@@ -21,5 +21,6 @@ export interface IOrder {
 export interface IProductList {
     productId : string
     amount : number
-    promotionId : string
+    option: string
+    discount : number
 }

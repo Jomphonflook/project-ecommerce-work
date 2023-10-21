@@ -1,10 +1,22 @@
-import { IsDefined, IsNumber, IsString } from "class-validator";
+import { IsArray, IsDefined, IsEnum, IsNumber, IsString, ValidateNested } from "class-validator";
+import { CategoryEnum } from "src/database/interface/product.interface";
 
 export class CreateProductDto {
     @IsDefined()
     @IsString()
     product_code: string
 
+    @IsDefined()
+    @IsEnum(CategoryEnum)
+    category: string
+
+    @IsDefined()
+    @IsArray()
+    @ValidateNested({ each: true })
+    optionProduct: optionProduct[]
+}
+
+export class optionProduct {
     @IsDefined()
     @IsString()
     name: string
@@ -20,5 +32,4 @@ export class CreateProductDto {
     @IsDefined()
     @IsNumber()
     price: number
-
 }

@@ -1,4 +1,4 @@
-import { IsDefined, IsEnum, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsArray, IsDefined, IsEnum, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
 import { CategoryEnum } from "src/database/interface/product.interface";
 
 export class UpdateProductDto {
@@ -8,29 +8,33 @@ export class UpdateProductDto {
 
     @IsOptional()
     @IsString()
-    name: string
-
-    @IsOptional()
-    @IsNumber()
-    amount: number
-
-    @IsOptional()
-    @IsString()
-    unit_name: string
-
-    @IsOptional()
-    @IsNumber()
-    price: number
-
-    @IsOptional()
-    img_product: string;
-
-    @IsOptional()
-    @IsString()
     promotionId: string;
+
+    @IsOptional()
+    @IsArray()
+    @ValidateNested({ each: true })
+    optionProduct: optionProduct[]
 
     @IsOptional()
     @IsEnum(CategoryEnum)
     category: CategoryEnum;
 
+}
+
+export class optionProduct {
+    @IsDefined()
+    @IsString()
+    name: string
+
+    @IsDefined()
+    @IsNumber()
+    amount: number
+
+    @IsDefined()
+    @IsString()
+    unit_name: string
+
+    @IsDefined()
+    @IsNumber()
+    price: number
 }
