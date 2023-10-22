@@ -25,6 +25,7 @@ export class OrderService {
   }
 
   async create(createOrderDto: CreateOrderDto) {
+    console.log("order service start >>>>>>")
     createOrderDto.status = StatusOrderEnum.WAIT_FOR_PURCHASE
     if (createOrderDto.evidence_purchase) {
       createOrderDto.status = StatusOrderEnum.WAIT_FOR_APPROVE
@@ -33,7 +34,7 @@ export class OrderService {
 
     const cartId = createOrderDto.cartId
     const cartInfo = await this.cartModel.findById(cartId)
-    if(cartInfo.cartList.length < 1){
+    if (cartInfo.cartList.length < 1) {
       return "not have cartInfo"
     }
     createOrderDto.price = cartInfo.price
@@ -44,12 +45,29 @@ export class OrderService {
     const result = await new this.orderModel(createOrderDto).save()
     if (result) {
       await this.cartModel.findByIdAndUpdate(cartId, {
-        price : 0,
+        price: 0,
         net_price: 0,
         totalDiscount: 0,
         cartList: []
       })
+      console.log("cartInfo xxxxxx" , cartInfo.cartList)
+      for (const obj of cartInfo.cartList) {
+        console.log("subtract amount product")
+        const productId: any = obj.productId
+        await this.productModel.findOneAndUpdate(
+          {
+            _id: productId,
+            'optionProduct.name': obj.option
+          },
+          {
+            '$inc': {
+              'optionProduct.$.amount': -obj.amount
+            }
+          },
+        )
+      }
     }
+    console.log("order finish!!!!!")
     return result;
   }
 

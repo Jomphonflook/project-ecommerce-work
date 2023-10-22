@@ -2,9 +2,7 @@ import mongoose from "mongoose";
 import { ICommon } from "./common.interface";
 
 export enum CategoryEnum {
-    FOOD = "อาหาร",
-    ELECTRONIC = "เครื่องใช้ไฟฟ้า",
-    FASION = "แฟชั่น"
+    Set = "เซ็ต", Cream = "ครีม", Moisturizer = "มอยเจอร์ไรเซอร์", Cleansing = "คลีนซิง", Cleanser = "คลีนเซอร์", Serum = "เซรั่ม", SunCream = "กันแดด"
 }
 
 export interface IProduct extends ICommon {

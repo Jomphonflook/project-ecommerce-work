@@ -18,6 +18,7 @@ export const orderSchema = new mongoose.Schema<IOrder>({
     net_price: { type: Number, require: true },
     purchase_date: { type: Date, require: false, default: null },
     status: { type: String, enum: StatusOrderEnum, required: true },
-    evidence_purchase: { type: String, required: false, default: null }
+    evidence_purchase: { type: String, required: false, default: null },
+    address: {type: String, requierd: true}
 
 }, { timestamps: true })

@@ -16,6 +16,7 @@ export interface IOrder {
     purchase_date: Date
     status : StatusOrderEnum
     evidence_purchase : string
+    address: string
 }
 
 export interface IProductList {

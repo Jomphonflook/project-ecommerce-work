@@ -19,6 +19,10 @@ export class UpdateProductDto {
     @IsEnum(CategoryEnum)
     category: CategoryEnum;
 
+    @IsOptional()
+    @IsString()
+    img_product: string
+
 }
 
 export class optionProduct {

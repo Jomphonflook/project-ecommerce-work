@@ -42,4 +42,8 @@ export class CreateOrderDto {
     @IsOptional()
     @IsString()
     evidence_purchase: string
+
+    @IsDefined()
+    @IsString()
+    address: string
 }

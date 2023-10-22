@@ -2,9 +2,6 @@ import { IsArray, IsDefined, IsEnum, IsNumber, IsString, ValidateNested } from "
 import { CategoryEnum } from "src/database/interface/product.interface";
 
 export class CreateProductDto {
-    @IsDefined()
-    @IsString()
-    product_code: string
 
     @IsDefined()
     @IsEnum(CategoryEnum)

@@ -12,6 +12,7 @@ export class FileSystemController {
     saveFile(
         @UploadedFile() file: Express.Multer.File
     ) {
+        console.log("save file")
         return file
     }
     

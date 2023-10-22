@@ -12,6 +12,7 @@ export class ProductController {
   async createProduct(
     @Body() createProduct: CreateProductDto
   ) {
+    console.log("first")
     return this.productService.createProduct(createProduct)
   }
 
@@ -23,7 +24,7 @@ export class ProductController {
     return await this.productService.updateProduct(id, UpdateProductDto)
   }
 
-  @Get()
+  @Post('/all')
   async getAllProduct(
     @Body() filter: any
   ){

@@ -34,12 +34,14 @@ export class CartService {
   }
 
   async updateCart(updateCartDto: UpdateCartDto) {
+    console.log("cart service start>>")
     let cartList = updateCartDto.cartList
     let cartId = updateCartDto.cartId
     let price = 0
     let net_price = 0
     let totalDiscount = 0
     let newCartList = []
+    console.log(cartList)
     for (const obj of cartList as any) {
       const amount = obj.amount
       const option = obj.option
@@ -67,6 +69,7 @@ export class CartService {
       totalDiscount,
       cartList: newCartList
     }, { new: true })
+    console.log("cart service finish!")
     return result;
   }
 

@@ -6,6 +6,7 @@ import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { LoginUserDto } from './dto/user-login.dto';
 import { ICart } from 'src/database/interface/cart.interface';
+import { IProduct } from 'src/database/interface/product.interface';
 @Injectable()
 export class UserService {
 
@@ -17,6 +18,9 @@ export class UserService {
 
     @Inject('CART_MODEL')
     private cartModel: Model<ICart>,
+
+    @Inject('PRODUCT_MODEL')
+    private productModel: Model<IProduct>,
   ) { }
 
   async userRegister(createUserDto: CreateUserDto) {
@@ -71,13 +75,32 @@ export class UserService {
       password: 0,
     })
     const cart = await this.cartModel.findOne({
-      userId : user.id
+      userId: user.id
     })
-    console.log(user)
-    console.log(cart)
+    let tempIndex = 0
+    let cartTemp = []
+    for (const obj of cart.cartList) {
+      const productInfo = await this.productModel.findById(obj.productId)
+      const optionProduct = productInfo.optionProduct.filter((e: any) => e.name === obj.option)
+      const img_prodcut = productInfo.img_product
+      const info: any = optionProduct[0]
+      const newCartObj = {
+        product_name: info.name,
+        img_product: img_prodcut,
+        price: info.price,
+        unit_name: info.unit_name,
+        amountOrder: cart.cartList[tempIndex].amount,
+        discount: cart.cartList[tempIndex].discount
+      }
+      cartTemp.push(newCartObj)
+      tempIndex++
+    }
     return {
       user: user,
-      cart : cart
+      cart: {
+        _id: cart.id,
+        cartList: cartTemp
+      }
     };
   }
 

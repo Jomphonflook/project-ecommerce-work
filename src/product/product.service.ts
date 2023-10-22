@@ -30,7 +30,7 @@ export class ProductService {
         // const limit = 2
         // const page = 1
         const testFilter = {
-            price: { $gt: filter.priceStart, $lt: filter.priceTo },
+            //price: { $gt: filter.priceStart, $lt: filter.priceTo },
             //name: { $regex: filter.productName, $options: 'i' }
         }
 
