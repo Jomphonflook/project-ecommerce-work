@@ -20,6 +20,7 @@ export class UserController {
   //user login
   @Post('/login')
   login(@Body() loginUserDto: LoginUserDto) {
+    console.log("LOGIN INCOMING>>>>>>>>>>>>>>>>",loginUserDto)
     return this.userService.loginUser(loginUserDto)
   }
 
@@ -27,7 +28,7 @@ export class UserController {
   @UseGuards(JwtGuard)
   @Post(':id')
   findOne(@Param('id') id: string) {
-    console.log("first")
-    return this.userService.findOne(id)
+    console.log(id)
+      return this.userService.findOne(id)
   }
 }
