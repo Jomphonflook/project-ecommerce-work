@@ -56,7 +56,7 @@ export class AdminService {
   }
 
   async updateAdminProfile(id: string, updateInput: UpdateAdminDto) {
-    if(!updateInput.admin_code && !updateInput.phone && !updateInput.username){
+    if(!updateInput.phone && !updateInput.username){
       return {
         msg : "No Data For Update Profile"
       }
@@ -64,15 +64,9 @@ export class AdminService {
     const infoUpdate = {
       updatedAt : new Date()
     }
-    if (updateInput.admin_code) {
-      Object.assign(infoUpdate, {
-        admin_code: updateInput.admin_code,
-      })
-    }
     if (updateInput.username) {
       Object.assign(infoUpdate, {
         username: updateInput.username,
-
       })
     }
     if (updateInput.phone) {

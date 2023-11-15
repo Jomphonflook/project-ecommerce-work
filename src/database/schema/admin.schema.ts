@@ -2,7 +2,6 @@ import * as mongoose from 'mongoose';
 import { IAdmin } from '../interface/admin.interface';
 
 export const AdminSchema = new mongoose.Schema<IAdmin>({
-    admin_code: { type: String, required: true },
     username: {
         unique: true,
         type: String,

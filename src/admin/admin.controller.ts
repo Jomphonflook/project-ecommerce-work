@@ -25,6 +25,7 @@ export class AdminController {
   @UseGuards(JwtGuard)
   @Get('/:id')
   adminProfile(@Param('id') id: string) {
+    
     return this.adminService.adminProfile(id)
   }
 

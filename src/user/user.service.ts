@@ -85,6 +85,7 @@ export class UserService {
       const img_prodcut = productInfo.img_product
       const info: any = optionProduct[0]
       const newCartObj = {
+        productId : productInfo.id,
         product_name: info.name,
         img_product: img_prodcut,
         price: info.price,
