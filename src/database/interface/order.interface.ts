@@ -1,9 +1,9 @@
 
 export enum StatusOrderEnum {
-    WAIT_FOR_PURCHASE = "waiting-for-purchase",
-    WAIT_FOR_APPROVE = "waiting-for-approve",
-    APPROVE_PURCHASE = "approve-purchase",
-    CANCEL_ORDER = "cancel-order"
+    WAIT_FOR_PURCHASE = "รอการชำระเงิน",
+    WAIT_FOR_APPROVE = "รอยืนยัน",
+    APPROVE_PURCHASE = "ยืนยันการชำระเงิน",
+    CANCEL_ORDER = "ยกเลิกการสั่งซื้อ"
 }
 
 export interface IOrder {

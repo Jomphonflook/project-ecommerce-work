@@ -6,6 +6,8 @@ import { Model } from 'mongoose';
 import { verifyOrderDto } from './dto/verify-order.dto';
 import { IProduct } from 'src/database/interface/product.interface';
 import { ICart } from 'src/database/interface/cart.interface';
+import { async } from 'rxjs';
+import { orderDoc } from 'src/database/schema/order.schema';
 
 @Injectable()
 export class OrderService {
@@ -25,7 +27,7 @@ export class OrderService {
   }
 
   async create(createOrderDto: CreateOrderDto) {
-    console.log("order service start >>>>>>")
+    console.log("create order start >>>>>>")
     createOrderDto.status = StatusOrderEnum.WAIT_FOR_PURCHASE
     if (createOrderDto.evidence_purchase) {
       createOrderDto.status = StatusOrderEnum.WAIT_FOR_APPROVE
@@ -50,7 +52,6 @@ export class OrderService {
         totalDiscount: 0,
         cartList: []
       })
-      console.log("cartInfo xxxxxx" , cartInfo.cartList)
       for (const obj of cartInfo.cartList) {
         console.log("subtract amount product")
         const productId: any = obj.productId
@@ -88,19 +89,66 @@ export class OrderService {
   }
 
 
-  findAll() {
-    return `This action returns all order`;
+  async purchaseOrder(input) {
+    const order = await this.orderModel.findById(input.id)
+    if (order) {
+      const infoUpdate = {
+        status: StatusOrderEnum.WAIT_FOR_APPROVE,
+        evidence_purchase: input.slip,
+        purchase_date: new Date()
+      }
+      const purchaseUpdate = await this.orderModel.findByIdAndUpdate(input.id, infoUpdate, { new: true })
+      return purchaseUpdate
+    }
+    return "ไม่มีคำสั่งซื้อนี้ในระบบ"
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} order`;
+  async getOrderInfo(id) {
+    console.log("getOrder By orderId")
+    const orderInfo = await this.orderModel.findById(id)
+    if (orderInfo) {
+      return orderInfo
+    }
+    return "ไม่มีคำสั่งซื้อนี้ในระบบ"
   }
 
-  update(id: number, updateOrderDto: UpdateOrderDto) {
-    return `This action updates a #${id} order`;
+  async getOrderByUserId(input) {
+    console.log("getListOrder By userId")
+    const listOrder: orderDoc[] = await this.orderModel.find(input).sort({ createdAt: -1 })
+    //--------------------------------------------------
+    let tempListOrder: any = [...listOrder]
+    for (const [i, val] of tempListOrder.entries()) {
+      const productListTemp = []
+      const productList = val.productList
+      for (const val of productList) {
+        const productId = val.productId
+        const productInfo = await this.productModel.findById(productId)
+        const optionInfo = productInfo.optionProduct.filter((e: any) => e.name === val.option)[0]
+        const newobj: any = {
+          img_product: productInfo.img_product,
+          optionInfo,
+          discount: val.discount,
+          amount: val.amount,
+          option: val.option,
+          productId: val.productId
+        }
+        productListTemp.push(newobj)
+      }
+      tempListOrder[i].productList = productListTemp
+    }
+    if (listOrder) return {
+      total: tempListOrder.length,
+      listOrder: tempListOrder
+    }
+    return "ไม่มีคำสั่งซื้อของผู้ใช้นี้ในระบบ"
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} order`;
+
+  async cancelOrder(input) {
+    const update = {
+      status: StatusOrderEnum.CANCEL_ORDER
+    }
+    const res =  this.orderModel.findByIdAndUpdate(input.orderId, update, { new: true })
+    if(res) return res
   }
 }

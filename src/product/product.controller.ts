@@ -12,7 +12,7 @@ export class ProductController {
   async createProduct(
     @Body() createProduct: CreateProductDto
   ) {
-    console.log("first")
+    console.log("create product")
     return this.productService.createProduct(createProduct)
   }
 

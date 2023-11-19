@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
@@ -6,7 +6,7 @@ import { verifyOrderDto } from './dto/verify-order.dto';
 
 @Controller('order')
 export class OrderController {
-  constructor(private readonly orderService: OrderService) {}
+  constructor(private readonly orderService: OrderService) { }
 
   @Post()
   create(@Body() createOrderDto: CreateOrderDto) {
@@ -16,27 +16,36 @@ export class OrderController {
   @Post("/verifyOrder")
   async verifyOrder(
     @Body() verifyOrder: verifyOrderDto
-  ){
+  ) {
     return await this.orderService.verifyOrder(verifyOrder)
   }
 
-  @Get()
-  findAll() {
-    return this.orderService.findAll();
+  @Put("/purchaseOrder")
+  async purchaseOrder(
+    @Body() purchaseInput: any
+  ) {
+    return await this.orderService.purchaseOrder(purchaseInput)
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.orderService.findOne(+id);
+  @Post("/orderInfo")
+  async getOrderInfo(
+    @Body() input : any
+  ){
+      const id = input.orderId
+      return await this.orderService.getOrderInfo(id)
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.orderService.update(+id, updateOrderDto);
+  @Post("/getOrderByUserId")
+  async getOrderByUserId(
+    @Body() input : any
+  ){
+      return await this.orderService.getOrderByUserId(input)
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.orderService.remove(+id);
+  @Put("/cancelOrder")
+  async cancelOrder(
+    @Body() input: any
+  ){
+    return await this.orderService.cancelOrder(input)
   }
 }

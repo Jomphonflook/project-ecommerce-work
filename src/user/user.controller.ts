@@ -13,7 +13,6 @@ export class UserController {
   //user register
   @Post()
   register(@Body() createUserDto: CreateUserDto) {
-    console.log(createUserDto)
     return this.userService.userRegister(createUserDto);
   }
 
@@ -28,7 +27,6 @@ export class UserController {
   @UseGuards(JwtGuard)
   @Post(':id')
   findOne(@Param('id') id: string) {
-    console.log(id)
       return this.userService.findOne(id)
   }
 }

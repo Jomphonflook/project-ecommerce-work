@@ -15,6 +15,7 @@ export class CartController {
 
   @Post('/updateCart')
   updateCart(@Body() updateCartDto: UpdateCartDto) {
+    console.log("update Cart")
     return this.cartService.updateCart(updateCartDto);
   }
 

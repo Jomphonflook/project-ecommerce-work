@@ -41,7 +41,6 @@ export class CartService {
     let net_price = 0
     let totalDiscount = 0
     let newCartList = []
-    console.log(cartList)
     for (const obj of cartList as any) {
       const amount = obj.amount
       const option = obj.option
@@ -56,9 +55,11 @@ export class CartService {
       const infoProduct: any = product.optionProduct.filter((e: any) => e.name === option)[0]
       const calPrice = amount * infoProduct.price
       price += calPrice
-      if (calPrice >= promotion.condition) {
-        cartTemp.discount = calPrice * (promotion.discount / 100)
-        totalDiscount += cartTemp.discount
+      if(promotion) {
+        if (calPrice >= promotion.condition) {
+          cartTemp.discount = calPrice * (promotion.discount / 100)
+          totalDiscount += cartTemp.discount
+        }
       }
       newCartList.push(cartTemp)
     }

@@ -35,7 +35,6 @@ export class UserService {
     const hash = await bcrypt.hash(password, saltOrRounds);
     createUserDto.password = hash
     const saveUser = await new this.userModel(createUserDto).save()
-    console.log("0")
     if (saveUser) {
       await new this.cartModel({
         userId: saveUser.id,
@@ -45,7 +44,6 @@ export class UserService {
         cartList: []
       }).save()
     }
-    console.log("1")
     return {
       id: saveUser.id
     };;

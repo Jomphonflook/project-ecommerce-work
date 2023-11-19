@@ -1,16 +1,17 @@
 import mongoose from "mongoose";
 import { IOrder, StatusOrderEnum } from "../interface/order.interface";
-
+export type orderDoc = mongoose.HydratedDocument<IOrder>
 export const orderSchema = new mongoose.Schema<IOrder>({
     order_code: { type: String, required: true },
     userId: { type: String, required: true },
     productList: {
-        type: [{
-            productId: { type: String, required: true },
-            option: { type: String, required: true },
-            amount: { type: Number, required: true },
-            discount: { type: Number, required: true }
-        }],
+        // type: [{
+        //     productId: { type: String, required: true },
+        //     option: { type: String, required: true },
+        //     amount: { type: Number, required: true },
+        //     discount: { type: Number, required: true }
+        // }],
+        type: [],
         require: true
     },
     price: { type: Number, require: true },

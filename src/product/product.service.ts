@@ -33,19 +33,7 @@ export class ProductService {
             //price: { $gt: filter.priceStart, $lt: filter.priceTo },
             //name: { $regex: filter.productName, $options: 'i' }
         }
-
-        console.log("CHECK EQUAL FILTER", _.isEqual(lastFilter, filter))
-        if (lastData && _.isEqual(lastFilter, filter)) {
-            return {
-                total: total,
-                amount: lastData.length,
-                data: lastData
-            }
-        }
         const result = await this.productModel.find(testFilter)//.skip((page - 1) * limit).limit(limit)
-        lastFilter = filter
-        lastData = result
-        //await new Promise(resolve => setTimeout(resolve, 2000)); //delay respone
         return {
             total: total,
             amount: result.length,
