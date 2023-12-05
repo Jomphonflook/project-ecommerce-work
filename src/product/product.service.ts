@@ -33,7 +33,7 @@ export class ProductService {
             //price: { $gt: filter.priceStart, $lt: filter.priceTo },
             //name: { $regex: filter.productName, $options: 'i' }
         }
-        const result = await this.productModel.find(testFilter).select({_id:false})//.skip((page - 1) * limit).limit(limit)
+        const result = await this.productModel.find(testFilter)//.skip((page - 1) * limit).limit(limit)
         return {
             total: total,
             amount: result.length,
