@@ -7,6 +7,7 @@ import * as bcrypt from 'bcrypt';
 import { LoginUserDto } from './dto/user-login.dto';
 import { ICart } from 'src/database/interface/cart.interface';
 import { IProduct } from 'src/database/interface/product.interface';
+import { retry } from 'rxjs';
 @Injectable()
 export class UserService {
 
@@ -83,7 +84,7 @@ export class UserService {
       const img_prodcut = productInfo.img_product
       const info: any = optionProduct[0]
       const newCartObj = {
-        productId : productInfo.id,
+        productId: productInfo.id,
         product_name: info.name,
         img_product: img_prodcut,
         price: info.price,
@@ -103,7 +104,19 @@ export class UserService {
     };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async updateProfile(input: any) {
+    const id = input.id
+    const updateInfo = input.updateInfo
+    console.log("info user update>>>>>",updateInfo)
+    try {
+      const result = this.userModel.findByIdAndUpdate(id, {
+        ...updateInfo,
+        updatedAt: Date.now()
+      }, { new: true }).select({ password: 0 })
+      return result
+    }
+    catch {
+      return "err update user profile"
+    }
   }
 }

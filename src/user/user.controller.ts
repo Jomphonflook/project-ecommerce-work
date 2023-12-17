@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Put } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/user-login.dto';
@@ -28,5 +28,12 @@ export class UserController {
   @Post(':id')
   findOne(@Param('id') id: string) {
       return this.userService.findOne(id)
+  }
+
+  @Put('/updateUserProfile')
+  updateUserProfile(
+    @Body() input : any
+  ){
+    return this.userService.updateProfile(input)
   }
 }
