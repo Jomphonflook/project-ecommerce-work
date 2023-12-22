@@ -9,10 +9,11 @@ export class PromotionController {
 
   @Post()
   create(@Body() createPromotionDto: CreatePromotionDto) {
+    console.log("create promo")
     return this.promotionService.create(createPromotionDto);
   }
 
-  @Get()
+  @Post('/getAll')
   findAll() {
     return this.promotionService.findAll();
   }
@@ -24,6 +25,7 @@ export class PromotionController {
 
   @Put(':id')
   update(@Param('id') id: string, @Body() updatePromotionDto: UpdatePromotionDto) {
+    console.log("update promo")
     return this.promotionService.update(id, updatePromotionDto);
   }
 

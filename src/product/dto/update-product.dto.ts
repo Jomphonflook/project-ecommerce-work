@@ -7,8 +7,7 @@ export class UpdateProductDto {
     product_code: string
 
     @IsOptional()
-    @IsString()
-    promotionId: string;
+    promotionId: any;
 
     @IsOptional()
     @IsArray()

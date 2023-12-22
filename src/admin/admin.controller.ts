@@ -12,25 +12,24 @@ export class AdminController {
   //admin register
   @Post()
   adminRegister(@Body() createAdminDto: CreateAdminDto) {
+    console.log("admin register")
     return this.adminService.adminRegister(createAdminDto);
   }
 
   //admin login
   @Post('/login')
   login(@Body() loginAdminDto: LoginAdminDto) {
+    console.log("admin login")
     return this.adminService.loginAdmin(loginAdminDto)
   }
 
   //get Admin Profile
-  @UseGuards(JwtGuard)
-  @Get('/:id')
+  @Post('/:id')
   adminProfile(@Param('id') id: string) {
-    
     return this.adminService.adminProfile(id)
   }
 
   //update profile
-  @UseGuards(JwtGuard)
   @Put('/update_profile/:id')
   updateAdminProfile(
     @Param('id') id: string,

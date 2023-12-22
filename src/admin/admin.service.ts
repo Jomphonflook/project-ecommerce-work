@@ -47,12 +47,17 @@ export class AdminService {
     }
     const payload = { id: findUser.id, username: findUser.username };
     return {
+      id : findUser.id,
       access_token: await this.jwtService.signAsync(payload),
     };
   }
 
   async adminProfile(id: string) {
-    return this.adminModel.findById(id).select({ password: 0 })
+    let result = await this.adminModel.findById(id).select({ password: 0 })
+    return {
+      "admin" : result,
+      "role" : "admin"
+    }
   }
 
   async updateAdminProfile(id: string, updateInput: UpdateAdminDto) {

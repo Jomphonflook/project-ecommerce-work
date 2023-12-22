@@ -51,10 +51,12 @@ export class CartService {
         discount: 0,
       }
       const product = await this.productModel.findById(obj.productId)
+      console.log(product.promotionId)
       const promotion = await this.promotionModel.findById(product.promotionId)
       const infoProduct: any = product.optionProduct.filter((e: any) => e.name === option)[0]
       const calPrice = amount * infoProduct.price
       price += calPrice
+      console.log("THIS IS PROMOTION>>>>>>>>>",promotion)
       if(promotion) {
         if (calPrice >= promotion.condition) {
           cartTemp.discount = calPrice * (promotion.discount / 100)

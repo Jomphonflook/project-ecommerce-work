@@ -73,6 +73,7 @@ export class UserService {
     const user = await this.userModel.findById(id).select({
       password: 0,
     })
+    if(!user) return null
     const cart = await this.cartModel.findOne({
       userId: user.id
     })
@@ -97,6 +98,7 @@ export class UserService {
     }
     return {
       user: user,
+      role: "user",
       cart: {
         _id: cart.id,
         cartList: cartTemp

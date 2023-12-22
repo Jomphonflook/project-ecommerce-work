@@ -27,7 +27,10 @@ export class UserController {
   @UseGuards(JwtGuard)
   @Post(':id')
   findOne(@Param('id') id: string) {
-      return this.userService.findOne(id)
+    if(id === "null") {
+      return null
+    }
+    return this.userService.findOne(id)
   }
 
   @Put('/updateUserProfile')

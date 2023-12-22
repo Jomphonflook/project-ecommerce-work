@@ -18,7 +18,9 @@ export class PromotionService {
   }
 
   async findAll() {
-    return await this.promotionModel.find();
+    return await this.promotionModel.find({
+      isDelete : false
+    });
   }
 
   async findOne(id: string) {

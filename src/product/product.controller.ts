@@ -13,6 +13,9 @@ export class ProductController {
     @Body() createProduct: CreateProductDto
   ) {
     console.log("create product")
+    if(createProduct.promotionId === 'none') {
+      delete createProduct['promotionId']
+    }
     return this.productService.createProduct(createProduct)
   }
 
@@ -21,6 +24,9 @@ export class ProductController {
     @Param('id') id: string,
     @Body() UpdateProductDto: UpdateProductDto
   ) {
+    if(UpdateProductDto.promotionId === 'none') {
+      UpdateProductDto.promotionId = 'none'
+    }
     return await this.productService.updateProduct(id, UpdateProductDto)
   }
 

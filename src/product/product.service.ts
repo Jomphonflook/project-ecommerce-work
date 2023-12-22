@@ -15,7 +15,8 @@ export class ProductService {
         private productModel: Model<IProduct>
     ) { }
 
-    async createProduct(createProduct: CreateProductDto) {
+    async createProduct(createProduct: CreateProductDto) { 
+        console.log("create Product >>>>>")
         const result = await new this.productModel(createProduct).save()
         return result
     }
@@ -27,9 +28,8 @@ export class ProductService {
 
     async getAllProduct(filter: any) {
         const total = await this.productModel.count()
-        // const limit = 2
-        // const page = 1
         const testFilter = {
+            isDelete: false,
             //price: { $gt: filter.priceStart, $lt: filter.priceTo },
             //name: { $regex: filter.productName, $options: 'i' }
         }

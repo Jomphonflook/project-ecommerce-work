@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { IPromotion } from "../interface/promotion.interface";
 
 export const PromotionSchema = new mongoose.Schema<IPromotion>({
-    promotion_code: { type: String, required: true, unique: true },
+    //promotion_code: { type: String, required: true, unique: true },
     promotion_name: { type: String, required: true },
     condition: { type: Number, required: true },
     discount: { type: Number, required: true },

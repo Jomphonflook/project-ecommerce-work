@@ -15,7 +15,7 @@ export const ProductSchema = new mongoose.Schema<IProduct>({
         required: true
     },
     img_product: { type: String, required: false, default: null },
-    promotionId: { type: mongoose.Schema.Types.ObjectId, require: false, default: null },
+    promotionId: { type: String, require: false, default: null },
     isActive: {
         type: Boolean,
         default: true

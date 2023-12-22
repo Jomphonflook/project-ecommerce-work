@@ -1,4 +1,4 @@
-import { IsArray, IsDefined, IsEnum, IsNumber, IsString, ValidateNested } from "class-validator";
+import { IsArray, IsDefined, IsEnum, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
 import { CategoryEnum } from "src/database/interface/product.interface";
 
 export class CreateProductDto {
@@ -11,6 +11,9 @@ export class CreateProductDto {
     @IsArray()
     @ValidateNested({ each: true })
     optionProduct: optionProduct[]
+
+    @IsOptional()
+    promotionId : any
 }
 
 export class optionProduct {
