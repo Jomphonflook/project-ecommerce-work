@@ -6,7 +6,6 @@ import { Model } from 'mongoose';
 import { verifyOrderDto } from './dto/verify-order.dto';
 import { IProduct } from 'src/database/interface/product.interface';
 import { ICart } from 'src/database/interface/cart.interface';
-import { async } from 'rxjs';
 import { orderDoc } from 'src/database/schema/order.schema';
 import { SearchOrderDto } from './dto/search-order.dto';
 import { IUser } from 'src/database/interface/user.interface';
@@ -201,20 +200,33 @@ export class OrderService {
       })
       return cal
     })
-
-
-    console.log("CALCULATE >>", calNetpriceWaitingApprove)
     let listRes = []
     let tempOrder = null
     
-    for await (const objOrder of res) {
+    for await (const [i, objOrder] of res.entries()) {
       const findUser = await this.userModel.findById(objOrder.userId).select({ password: 0 })
       let userDetail = findUser ? findUser : null
+      const productListTemp = []
+      const productList = objOrder.productList
+      for (const val of productList) {
+        const productId = val.productId
+        const productInfo = await this.productModel.findById(productId)
+        const optionInfo = productInfo.optionProduct.filter((e: any) => e.name === val.option)[0]
+        const newobj: any = {
+          img_product: productInfo.img_product,
+          optionInfo,
+          discount: val.discount,
+          amount: val.amount,
+          option: val.option,
+          productId: val.productId
+        }
+        productListTemp.push(newobj)
+      }
       tempOrder = {
         _id: objOrder._id,
         order_code: objOrder.order_code,
         userId: objOrder.userId,
-        productList: objOrder.productList,
+        productList: productListTemp,
         price: objOrder.price,
         totalDiscount: objOrder.totalDiscount,
         net_price: objOrder.net_price,
@@ -222,7 +234,6 @@ export class OrderService {
         status: objOrder.status,
         evidence_purchase: objOrder.evidence_purchase,
         address: objOrder.address,
-       
         userDetail: userDetail
       }
       listRes.push(tempOrder)
