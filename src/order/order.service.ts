@@ -156,6 +156,7 @@ export class OrderService {
   }
 
   async searchOrder(input: SearchOrderDto) {
+    console.log("search order >>>>")
     const filter = {}
     if (input?.status) {
       Object.assign(filter, {
@@ -173,6 +174,7 @@ export class OrderService {
         createdAt: { '$gte': new Date(input.startDate), '$lte': new Date(input.endDate) }
       })
     }
+    console.log(filter)
     const res = await this.orderModel.find(filter)
     const amountWaitingApprove = await this.orderModel.count({
       status : StatusOrderEnum.WAIT_FOR_APPROVE
