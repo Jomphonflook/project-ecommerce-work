@@ -8,6 +8,8 @@ import { IProduct } from 'src/database/interface/product.interface';
 import { ICart } from 'src/database/interface/cart.interface';
 import { async } from 'rxjs';
 import { orderDoc } from 'src/database/schema/order.schema';
+import { SearchOrderDto } from './dto/search-order.dto';
+import { IUser } from 'src/database/interface/user.interface';
 
 @Injectable()
 export class OrderService {
@@ -21,6 +23,9 @@ export class OrderService {
 
     @Inject('CART_MODEL')
     private cartModel: Model<ICart>,
+
+    @Inject('USER_MODEL')
+    private userModel: Model<IUser>,
 
   ) {
 
@@ -143,12 +148,92 @@ export class OrderService {
     return "ไม่มีคำสั่งซื้อของผู้ใช้นี้ในระบบ"
   }
 
-
   async cancelOrder(input) {
     const update = {
       status: StatusOrderEnum.CANCEL_ORDER
     }
-    const res =  this.orderModel.findByIdAndUpdate(input.orderId, update, { new: true })
-    if(res) return res
+    const res = this.orderModel.findByIdAndUpdate(input.orderId, update, { new: true })
+    if (res) return res
   }
+
+  async searchOrder(input: SearchOrderDto) {
+    const filter = {}
+    if (input?.status) {
+      Object.assign(filter, {
+        status: input.status // 
+      })
+    }
+    if( input?.order_code){
+      Object.assign(filter, {
+        order_code: input.order_code
+      })
+    }
+
+    if (input?.startDate && input?.endDate) {
+      Object.assign(filter, {
+        createdAt: { '$gte': new Date(input.startDate), '$lte': new Date(input.endDate) }
+      })
+    }
+    const res = await this.orderModel.find(filter)
+    const amountWaitingApprove = await this.orderModel.count({
+      status : StatusOrderEnum.WAIT_FOR_APPROVE
+    })
+    const amountApproveSuccess = await this.orderModel.count({
+      status: StatusOrderEnum.APPROVE_PURCHASE
+    })
+
+    const calNetpriceWaitingApprove = await this.orderModel.find({
+      status : StatusOrderEnum.WAIT_FOR_APPROVE
+    }).then(async (objOrder) => {
+      let cal = 0
+      objOrder.forEach(val => {
+        cal += val.net_price
+      })
+      return cal
+    })
+
+    const calNetpriceApproveSuccess = await this.orderModel.find({
+      status : StatusOrderEnum.APPROVE_PURCHASE
+    }).then(async (objOrder) => {
+      let cal = 0
+      objOrder.forEach(val => {
+        cal += val.net_price
+      })
+      return cal
+    })
+
+
+    console.log("CALCULATE >>", calNetpriceWaitingApprove)
+    let listRes = []
+    let tempOrder = null
+    
+    for await (const objOrder of res) {
+      const findUser = await this.userModel.findById(objOrder.userId).select({ password: 0 })
+      let userDetail = findUser ? findUser : null
+      tempOrder = {
+        _id: objOrder._id,
+        order_code: objOrder.order_code,
+        userId: objOrder.userId,
+        productList: objOrder.productList,
+        price: objOrder.price,
+        totalDiscount: objOrder.totalDiscount,
+        net_price: objOrder.net_price,
+        purchase_date: objOrder.purchase_date,
+        status: objOrder.status,
+        evidence_purchase: objOrder.evidence_purchase,
+        address: objOrder.address,
+       
+        userDetail: userDetail
+      }
+      listRes.push(tempOrder)
+    }
+    return {
+      calNetpriceWaitingApprove: calNetpriceWaitingApprove,
+      calNetpriceApproveSuccess: calNetpriceApproveSuccess,
+      amountWaitingApprove : amountWaitingApprove,
+      amountApproveSuccess : amountApproveSuccess,
+      listOrder : listRes
+    }
+  }
+
 }

@@ -24,4 +24,7 @@ export class UpdatePromotionDto {
     @IsOptional()
     @IsNumber()
     end_date : Number
+
+    @IsOptional()
+    isDelete : Boolean
 }

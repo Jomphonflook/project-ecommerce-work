@@ -3,6 +3,7 @@ import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { verifyOrderDto } from './dto/verify-order.dto';
+import { SearchOrderDto } from './dto/search-order.dto';
 
 @Controller('order')
 export class OrderController {
@@ -47,5 +48,12 @@ export class OrderController {
     @Body() input: any
   ){
     return await this.orderService.cancelOrder(input)
+  }
+
+  @Post("/searchOrder")
+  async searchOrder(
+    @Body() input : SearchOrderDto
+  ){
+    return await this.orderService.searchOrder(input)
   }
 }

@@ -9,5 +9,5 @@ export interface IProduct extends ICommon {
     optionProduct: [],
     category: CategoryEnum,
     img_product: string,
-    promotionId: mongoose.Schema.Types.ObjectId,
+    promotionId: string,
 }
