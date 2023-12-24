@@ -10,4 +10,5 @@ export interface IProduct extends ICommon {
     category: CategoryEnum,
     img_product: string,
     promotionId: string,
+    videoUrl : string
 }

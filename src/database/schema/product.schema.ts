@@ -16,6 +16,7 @@ export const ProductSchema = new mongoose.Schema<IProduct>({
     },
     img_product: { type: String, required: false, default: null },
     promotionId: { type: String, require: false, default: null },
+    videoUrl : {type: String, require: false, default: null },
     isActive: {
         type: Boolean,
         default: true

@@ -54,6 +54,7 @@ export class ProductService {
                 optionProduct: obj.optionProduct,
                 img_product: obj.img_product,
                 promotionId: promotionId,
+                videoUrl : obj.videoUrl,
                 isActive: obj.isActive,
                 isDelete: obj.isDelete,
                 createdAt: obj.createdAt,

@@ -81,17 +81,17 @@ export class UserService {
     let cartTemp = []
     for (const obj of cart.cartList) {
       const productInfo = await this.productModel.findById(obj.productId)
-      const optionProduct = productInfo.optionProduct.filter((e: any) => e.name === obj.option)
-      const img_prodcut = productInfo.img_product
+      const optionProduct = productInfo?.optionProduct?.filter((e: any) => e.name === obj.option) ? productInfo?.optionProduct?.filter((e: any) => e.name === obj.option) : []
+      const img_prodcut = productInfo?.img_product
       const info: any = optionProduct[0]
       const newCartObj = {
-        productId: productInfo.id,
-        product_name: info.name,
+        productId: productInfo?.id,
+        product_name: info?.name,
         img_product: img_prodcut,
-        price: info.price,
-        unit_name: info.unit_name,
-        amountOrder: cart.cartList[tempIndex].amount,
-        discount: cart.cartList[tempIndex].discount
+        price: info?.price,
+        unit_name: info?.unit_name,
+        amountOrder: cart?.cartList[tempIndex].amount,
+        discount: cart?.cartList[tempIndex].discount
       }
       cartTemp.push(newCartObj)
       tempIndex++
