@@ -50,9 +50,14 @@ export class CartService {
         option: option,
         discount: 0,
       }
+      
       const product = await this.productModel.findById(obj.productId)
       console.log(product.promotionId)
-      const promotion = await this.promotionModel.findById(product.promotionId)
+      let promotion = null
+      if(product?.promotionId !== "none"){
+        promotion = await this.promotionModel.findById(product.promotionId)
+      }
+      
       const infoProduct: any = product.optionProduct.filter((e: any) => e.name === option)[0]
       const calPrice = amount * infoProduct.price
       price += calPrice

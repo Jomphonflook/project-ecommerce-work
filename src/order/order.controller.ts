@@ -4,6 +4,7 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { verifyOrderDto } from './dto/verify-order.dto';
 import { SearchOrderDto } from './dto/search-order.dto';
+import { StatusOrderEnum } from 'src/database/interface/order.interface';
 
 @Controller('order')
 export class OrderController {
@@ -55,5 +56,17 @@ export class OrderController {
     @Body() input : SearchOrderDto
   ){
     return await this.orderService.searchOrder(input)
+  }
+
+
+  //localhost:3000/api/order/updateStatusOrder
+  @Put("/updateStatusOrder")
+  async updateOrder(
+    @Body() input : {
+      id : string
+      status : string
+    }
+  ){
+    return await this.orderService.updateStatusOrder(input.id, input.status)
   }
 }

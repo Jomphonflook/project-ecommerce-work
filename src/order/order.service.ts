@@ -163,9 +163,9 @@ export class OrderService {
         status: input.status // 
       })
     }
-    if( input?.order_code){
+    if (input?.order_code) {
       Object.assign(filter, {
-        order_code: input.order_code
+        order_code: { $regex : input.order_code}
       })
     }
 
@@ -177,14 +177,14 @@ export class OrderService {
     console.log(filter)
     const res = await this.orderModel.find(filter)
     const amountWaitingApprove = await this.orderModel.count({
-      status : StatusOrderEnum.WAIT_FOR_APPROVE
+      status: StatusOrderEnum.WAIT_FOR_APPROVE
     })
     const amountApproveSuccess = await this.orderModel.count({
       status: StatusOrderEnum.APPROVE_PURCHASE
     })
 
     const calNetpriceWaitingApprove = await this.orderModel.find({
-      status : StatusOrderEnum.WAIT_FOR_APPROVE
+      status: StatusOrderEnum.WAIT_FOR_APPROVE
     }).then(async (objOrder) => {
       let cal = 0
       objOrder.forEach(val => {
@@ -194,7 +194,7 @@ export class OrderService {
     })
 
     const calNetpriceApproveSuccess = await this.orderModel.find({
-      status : StatusOrderEnum.APPROVE_PURCHASE
+      status: StatusOrderEnum.APPROVE_PURCHASE
     }).then(async (objOrder) => {
       let cal = 0
       objOrder.forEach(val => {
@@ -204,7 +204,7 @@ export class OrderService {
     })
     let listRes = []
     let tempOrder = null
-    
+
     for await (const [i, objOrder] of res.entries()) {
       const findUser = await this.userModel.findById(objOrder.userId).select({ password: 0 })
       let userDetail = findUser ? findUser : null
@@ -243,10 +243,16 @@ export class OrderService {
     return {
       calNetpriceWaitingApprove: calNetpriceWaitingApprove,
       calNetpriceApproveSuccess: calNetpriceApproveSuccess,
-      amountWaitingApprove : amountWaitingApprove,
-      amountApproveSuccess : amountApproveSuccess,
-      listOrder : listRes
+      amountWaitingApprove: amountWaitingApprove,
+      amountApproveSuccess: amountApproveSuccess,
+      listOrder: listRes
     }
   }
 
+  async updateStatusOrder(id: any, status : string) {
+    const result = await this.orderModel.findByIdAndUpdate(id, {
+      status: status
+    }, {new :true})
+    return result
+  }
 }
