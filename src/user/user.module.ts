@@ -11,7 +11,7 @@ import { JwtModule } from '@nestjs/jwt';
   imports: [DatabaseModule, JwtModule.register({
     global: true,
     secret: 'Sx59mzoV2WJJZCtJhQuq',
-    signOptions: { expiresIn: '120m' },
+    signOptions: { expiresIn: '240m' },
   })],
   controllers: [UserController],
   providers: [UserService, ...usersProvider, ...cartProviders, ...productsProviders],
