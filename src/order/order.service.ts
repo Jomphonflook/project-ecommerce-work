@@ -31,7 +31,6 @@ export class OrderService {
   }
 
   async create(createOrderDto: CreateOrderDto) {
-    console.log("create order start >>>>>>")
     createOrderDto.status = StatusOrderEnum.WAIT_FOR_PURCHASE
     if (createOrderDto.evidence_purchase) {
       createOrderDto.status = StatusOrderEnum.WAIT_FOR_APPROVE
@@ -57,7 +56,6 @@ export class OrderService {
         cartList: []
       })
       for (const obj of cartInfo.cartList) {
-        console.log("subtract amount product")
         const productId: any = obj.productId
         await this.productModel.findOneAndUpdate(
           {
@@ -72,7 +70,6 @@ export class OrderService {
         )
       }
     }
-    console.log("order finish!!!!!")
     return result;
   }
 
@@ -108,7 +105,6 @@ export class OrderService {
   }
 
   async getOrderInfo(id) {
-    console.log("getOrder By orderId")
     const orderInfo = await this.orderModel.findById(id)
     if (orderInfo) {
       return orderInfo
@@ -117,7 +113,6 @@ export class OrderService {
   }
 
   async getOrderByUserId(input) {
-    console.log("getListOrder By userId")
     const listOrder: orderDoc[] = await this.orderModel.find(input).sort({ createdAt: -1 })
     //--------------------------------------------------
     let tempListOrder: any = [...listOrder]
@@ -156,7 +151,6 @@ export class OrderService {
   }
 
   async searchOrder(input: SearchOrderDto) {
-    console.log("search order >>>>")
     const filter = {}
     if (input?.status) {
       Object.assign(filter, {
@@ -165,7 +159,7 @@ export class OrderService {
     }
     if (input?.order_code) {
       Object.assign(filter, {
-        order_code: { $regex : input.order_code}
+        order_code: { $regex: input.order_code }
       })
     }
 
@@ -174,7 +168,6 @@ export class OrderService {
         createdAt: { '$gte': new Date(input.startDate), '$lte': new Date(input.endDate) }
       })
     }
-    console.log(filter)
     const res = await this.orderModel.find(filter)
     const amountWaitingApprove = await this.orderModel.count({
       status: StatusOrderEnum.WAIT_FOR_APPROVE
@@ -236,6 +229,7 @@ export class OrderService {
         status: objOrder.status,
         evidence_purchase: objOrder.evidence_purchase,
         address: objOrder.address,
+        trackingNo: objOrder.trackingNo,
         userDetail: userDetail
       }
       listRes.push(tempOrder)
@@ -249,10 +243,19 @@ export class OrderService {
     }
   }
 
-  async updateStatusOrder(id: any, status : string) {
-    const result = await this.orderModel.findByIdAndUpdate(id, {
-      status: status
-    }, {new :true})
+  async updateStatusOrder(id: any, status: string, trackingNo: string) {
+    const data = { }
+    if (status) {
+      Object.assign(data, {
+        status: status
+      })
+    }
+    if (trackingNo) {
+      Object.assign(data, {
+        trackingNo: trackingNo
+      })
+    }
+    const result = await this.orderModel.findByIdAndUpdate(id, data, { new: true })
     return result
   }
 }

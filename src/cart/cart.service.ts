@@ -34,7 +34,6 @@ export class CartService {
   }
 
   async updateCart(updateCartDto: UpdateCartDto) {
-    console.log("cart service start>>")
     let cartList = updateCartDto.cartList
     let cartId = updateCartDto.cartId
     let price = 0
@@ -44,6 +43,7 @@ export class CartService {
     for (const obj of cartList as any) {
       const amount = obj.amount
       const option = obj.option
+      if(!option) return "please send option"
       let cartTemp = {
         productId: obj.productId,
         amount: amount,
@@ -52,16 +52,13 @@ export class CartService {
       }
       
       const product = await this.productModel.findById(obj.productId)
-      console.log(product.promotionId)
       let promotion = null
       if(product?.promotionId !== "none"){
         promotion = await this.promotionModel.findById(product.promotionId)
       }
-      
       const infoProduct: any = product.optionProduct.filter((e: any) => e.name === option)[0]
       const calPrice = amount * infoProduct.price
       price += calPrice
-      console.log("THIS IS PROMOTION>>>>>>>>>",promotion)
       if(promotion) {
         if (calPrice >= promotion.condition) {
           cartTemp.discount = calPrice * (promotion.discount / 100)
@@ -77,14 +74,14 @@ export class CartService {
       totalDiscount,
       cartList: newCartList
     }, { new: true })
-    console.log("cart service finish!")
     return result;
   }
 
   async getCartByUserId(userId: string){
-    return await this.cartModel.findOne({
+    const result = await this.cartModel.findOne({
       userId
     })
+    return result
   }
 
   findOne(id: number) {

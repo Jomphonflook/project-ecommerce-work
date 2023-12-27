@@ -64,9 +64,10 @@ export class OrderController {
   async updateOrder(
     @Body() input : {
       id : string
-      status : string
+      status : string,
+      trackingNo : string
     }
   ){
-    return await this.orderService.updateStatusOrder(input.id, input.status)
+    return await this.orderService.updateStatusOrder(input.id, input.status ,input.trackingNo)
   }
 }

@@ -12,7 +12,6 @@ export class ProductController {
   async createProduct(
     @Body() createProduct: CreateProductDto
   ) {
-    console.log("create product")
     if(createProduct.promotionId === 'none') {
       delete createProduct['promotionId']
     }

@@ -39,14 +39,12 @@ export class PromotionService {
         promotionId: id
       })
       if (checkPromotionUsed) {
-        console.log("CHECK promotion used>>")
         return {
           message: "This promotion used in product",
           product: checkPromotionUsed
         }
       }
     }
-    console.log("check complete")
     const result = await this.promotionModel.findByIdAndUpdate(id, updatePromotionDto, { new: true })
     return result;
   }

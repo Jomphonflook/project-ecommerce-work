@@ -101,7 +101,7 @@ export class UserService {
       role: "user",
       cart: {
         _id: cart.id,
-        cartList: cartTemp
+        cartList: cartTemp.sort()
       }
     };
   }
@@ -109,7 +109,6 @@ export class UserService {
   async updateProfile(input: any) {
     const id = input.id
     const updateInfo = input.updateInfo
-    console.log("info user update>>>>>",updateInfo)
     try {
       const result = this.userModel.findByIdAndUpdate(id, {
         ...updateInfo,

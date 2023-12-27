@@ -9,7 +9,6 @@ export class PromotionController {
 
   @Post()
   create(@Body() createPromotionDto: CreatePromotionDto) {
-    console.log("create promo")
     return this.promotionService.create(createPromotionDto);
   }
 
@@ -25,7 +24,6 @@ export class PromotionController {
 
   @Put(':id')
   update(@Param('id') id: string, @Body() updatePromotionDto: UpdatePromotionDto) {
-    console.log("update promo")
     return this.promotionService.update(id, updatePromotionDto);
   }
 

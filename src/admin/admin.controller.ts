@@ -12,14 +12,12 @@ export class AdminController {
   //admin register
   @Post()
   adminRegister(@Body() createAdminDto: CreateAdminDto) {
-    console.log("admin register")
     return this.adminService.adminRegister(createAdminDto);
   }
 
   //admin login
   @Post('/login')
   login(@Body() loginAdminDto: LoginAdminDto) {
-    console.log("admin login")
     return this.adminService.loginAdmin(loginAdminDto)
   }
 
