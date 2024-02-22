@@ -18,13 +18,14 @@ export class UpdatePromotionDto {
     condition : number //ซื้อครบกี่บาท
 
     @IsOptional()
-    @IsNumber()
-    start_date : Number
+    start_date :any
 
     @IsOptional()
-    @IsNumber()
-    end_date : Number
+    end_date : any
 
     @IsOptional()
     isDelete : Boolean
+
+    @IsOptional()
+    status : any
 }

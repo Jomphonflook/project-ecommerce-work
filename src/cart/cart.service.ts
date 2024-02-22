@@ -40,6 +40,7 @@ export class CartService {
     let net_price = 0
     let totalDiscount = 0
     let newCartList = []
+    let statusPromotion = 'no_promotion'
     for (const obj of cartList as any) {
       const amount = obj.amount
       const option = obj.option
@@ -59,10 +60,37 @@ export class CartService {
       const infoProduct: any = product.optionProduct.filter((e: any) => e.name === option)[0]
       const calPrice = amount * infoProduct.price
       price += calPrice
+      
       if(promotion) {
-        if (calPrice >= promotion.condition) {
-          cartTemp.discount = calPrice * (promotion.discount / 100)
-          totalDiscount += cartTemp.discount
+        if(promotion.status ==='disable' && promotion.end_date >= new Date() && new Date() >= promotion.start_date){
+          await this.promotionModel.findByIdAndUpdate(product.promotionId, {status : "enable"})
+          if(promotion.end_date <= new Date() && new Date() >= promotion.start_date){
+            await this.promotionModel.findByIdAndUpdate(product.promotionId, {status : "expire"})
+            statusPromotion = "expire"
+          }
+          else if(promotion.end_date >= new Date() && new Date() >= promotion.start_date){
+            if (calPrice >= promotion.condition) {
+              cartTemp.discount = calPrice * (promotion.discount / 100)
+              totalDiscount += cartTemp.discount
+            }
+            statusPromotion = "enable"
+          }
+        }
+        else if(promotion.status === "enable"){
+          if(promotion.end_date <= new Date() && new Date() >= promotion.start_date){
+            await this.promotionModel.findByIdAndUpdate(product.promotionId, {status : "expire"})
+            statusPromotion = "expire"
+          }
+          else if(promotion.end_date >= new Date() && new Date() >= promotion.start_date){
+            if (calPrice >= promotion.condition) {
+              cartTemp.discount = calPrice * (promotion.discount / 100)
+              totalDiscount += cartTemp.discount
+            }
+            statusPromotion = "enable"
+          }
+        }
+        else {
+          statusPromotion = "expire"
         }
       }
       newCartList.push(cartTemp)
@@ -74,7 +102,16 @@ export class CartService {
       totalDiscount,
       cartList: newCartList
     }, { new: true })
-    return result;
+    console.log("statusPromo", statusPromotion)
+    Object.assign(result, {
+      statusPromotion : statusPromotion
+    })
+    return {
+      ...result.toObject(),
+      statusPromotion
+    };
+
+    //return result
   }
 
   async getCartByUserId(userId: string){

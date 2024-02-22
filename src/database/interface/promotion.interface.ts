@@ -7,4 +7,5 @@ export interface IPromotion extends ICommon {
     condition : number //ซื้อครบกี่บาท
     start_date : Date
     end_date : Date
+    status : string
 }

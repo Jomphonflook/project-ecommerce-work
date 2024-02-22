@@ -16,4 +16,7 @@ export const PromotionSchema = new mongoose.Schema<IPromotion>({
         type: Boolean,
         default: false
     },
+    status : {
+        type : String,
+    }
 }, { timestamps: true })

@@ -1,4 +1,4 @@
-import { IsDefined, IsNumber, IsOptional, IsString } from "class-validator"
+import { IsDefined, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator"
 
 export class CreatePromotionDto {
     @IsDefined()
@@ -13,11 +13,12 @@ export class CreatePromotionDto {
     @IsNumber()
     condition : number //ซื้อครบกี่บาท 
 
-    // @IsOptional()
-    // @IsNumber()
-    // start_date : Number
+    @IsNotEmpty()
+    start_date : any
 
-    // @IsOptional()
-    // @IsNumber()
-    // end_date : Number
+    @IsNotEmpty()
+    end_date : any
+
+    @IsOptional()
+    status : any
 }
