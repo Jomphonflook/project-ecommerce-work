@@ -242,7 +242,7 @@ export class OrderService {
         const productId = val.productId;
         const productInfo = await this.productModel.findById(productId);
         console.log(productInfo)
-        const optionInfo = productInfo.optionProduct.filter(
+        const optionInfo = productInfo?.optionProduct.filter(
           (e: any) => e.name === val.option,
         )[0];
         const newobj: any = {
