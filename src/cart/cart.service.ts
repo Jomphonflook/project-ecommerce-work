@@ -102,7 +102,6 @@ export class CartService {
       totalDiscount,
       cartList: newCartList
     }, { new: true })
-    console.log("statusPromo", statusPromotion)
     Object.assign(result, {
       statusPromotion : statusPromotion
     })
@@ -110,8 +109,6 @@ export class CartService {
       ...result.toObject(),
       statusPromotion
     };
-
-    //return result
   }
 
   async getCartByUserId(userId: string){

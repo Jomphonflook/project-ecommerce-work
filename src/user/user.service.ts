@@ -8,6 +8,7 @@ import { LoginUserDto } from './dto/user-login.dto';
 import { ICart } from 'src/database/interface/cart.interface';
 import { IProduct } from 'src/database/interface/product.interface';
 import { retry } from 'rxjs';
+import { has } from 'lodash';
 @Injectable()
 export class UserService {
 
@@ -109,6 +110,12 @@ export class UserService {
   async updateProfile(input: any) {
     const id = input.id
     const updateInfo = input.updateInfo
+    if(updateInfo.password){
+      const saltOrRounds = 10;
+      const password = updateInfo.password;
+      const hash = await bcrypt.hash(password, saltOrRounds);
+      updateInfo.password = hash
+    }
     try {
       const result = this.userModel.findByIdAndUpdate(id, {
         ...updateInfo,

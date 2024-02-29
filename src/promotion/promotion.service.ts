@@ -17,7 +17,6 @@ export class PromotionService {
   ) {}
 
   async create(createPromotionDto: CreatePromotionDto) {
-    console.log("create Promotion >>",createPromotionDto)
     if (
       new Date(createPromotionDto.start_date) > new Date() 
     ) {
@@ -44,17 +43,12 @@ export class PromotionService {
   }
 
   async update(id: string, updatePromotionDto: UpdatePromotionDto) {
-    console.log("updatePromotion >>",updatePromotionDto)
-    console.log("01",new Date(updatePromotionDto.start_date))
-    console.log("02",new Date())
     if (
       new Date(updatePromotionDto.start_date) > new Date() 
     ) {
-      console.log("disable")
       updatePromotionDto.status = 'disable'
     }
     else {
-      console.log("enable")
       updatePromotionDto.status = 'enable'
     }
     if (updatePromotionDto.isDelete) {

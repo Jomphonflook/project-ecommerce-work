@@ -34,13 +34,11 @@ export class ProductService {
         })
         const testFilter = {
             isDelete: false,
-            //price: { $gt: filter.priceStart, $lt: filter.priceTo },
-            //name: { $regex: filter.productName, $options: 'i' }
         }
         let arr = []
         let tempProduct = {}
 
-        const result = await this.productModel.find(testFilter)//.skip((page - 1) * limit).limit(limit)
+        const result = await this.productModel.find(testFilter)
         for await (const obj of result) {
             const promotionId = obj.promotionId
             let promotionDetail = null
